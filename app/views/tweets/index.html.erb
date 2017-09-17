@@ -1,10 +1,16 @@
 
 <p id="notice"><%= notice %></p>
 
-<div class ="row header">
-
-  <h1>Tweets</h1>
-
+<div class="card text-center">
+  <div class="card-header" >
+  </div>
+  <div class="card-body card-body-color">
+    <h4 class="card-title">Sarah's Twitter Clone</h4>
+    <p class="card-text">Wanted to see how this would look for a header.</p>
+    <a href="#" class="btn btn-primary">Sign In</a>
+  </div>
+  <div class="card-footer text-muted">
+  </div>
 </div>
 
 
@@ -33,9 +39,31 @@
   </div>
 </nav>
 <br>
-<br>
 
-  <div class="row">
+<div class="row">
+      <% @tweets.each_with_index do |tweet, i| %>
+      <% if i%3==0 && i!= 0%>
+</div>
+    <div class ="row">
+    <%end%>
+  <div class="col-md-4">
+  <div class="card" style="width: 20rem;">
+    <div class="card-body">
+      <h4 class="card-title"><%= tweet.username %></h4>
+      <!--<h6 class="card-subtitle mb-2 text-muted"></h6> -->
+      <p class="card-text"><%= tweet.content %></p>
+      <a href="#" class="card-link"><%= link_to 'Edit', edit_tweet_path(tweet) %></a>
+      <a href="#" class="card-link"><%= link_to 'Show', tweet %></a>
+      <a href="#" class="card-link"><%= link_to 'Destroy', tweet, method: :delete, data: { confirm: 'Are you sure?' } %></a>
+    </div>
+  </div>
+  </div>
+      <% end %>
+</div>
+
+
+
+  <!--<div class="row">
       <% @tweets.each_with_index do |tweet, i| %>
       <% if i%4==0 && i!= 0%>
     </div>
@@ -49,7 +77,7 @@
         <%= link_to 'Destroy', tweet, method: :delete, data: { confirm: 'Are you sure?' } %>
       </div>
     <% end %>
-  </div>
+  </div> -->
 
 <br>
 
