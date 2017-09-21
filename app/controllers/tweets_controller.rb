@@ -25,10 +25,29 @@ class TweetsController < ApplicationController
   # POST /tweets
   # POST /tweets.json
   def create
-    @tweet = Tweet.new(tweet_params)
+
+    @tweet = Tweet.create(tweet_params)
+
+    message_arr = @tweet.content.split
+
+    message_arr.each_with_index do |word, index|
+      if word[0] == "#"
+        if Tag.pluck(:phrase).include?(word)
+          tag = Tag.find_by(phrase: word)
+        else
+          tag = Tag.create(phrase: word )
+        end
+        TweetTag.create(tag_id: tag.id, tweet_id: @tweet.id)
+        message_arr[index] = "<a href='/tags/#{tag.id}'>#{word}</a>"
+      end
+
+    end
+
+    @tweet.update(content: message_arr.join(" "))
 
     respond_to do |format|
       if @tweet.save
+
         format.html { redirect_to @tweet, notice: 'Tweet was successfully created.' }
         format.json { render :show, status: :created, location: @tweet }
       else
@@ -62,6 +81,10 @@ class TweetsController < ApplicationController
     end
   end
 
+  def show_tagged_tweets
+      @tag = Tag.find(params[:id])
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_tweet
@@ -70,6 +93,6 @@ class TweetsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def tweet_params
-      params.require(:tweet).permit(:username, :content)
+      params.require(:tweet).permit(:user_id, :content)
     end
 end

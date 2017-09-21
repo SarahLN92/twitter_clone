@@ -1,0 +1,20 @@
+<h1><%= @tag.phrase %></h1>
+
+
+<% @tag.tweets %>
+
+<div class="row">
+    <% @tag.tweets.each_with_index do |tweet, i| %>
+    <% if i%4==0 && i!= 0%>
+  </div>
+  <div class ="row">
+  <%end%>
+    <div class="col-md-3 card">
+      <%= link_to tweet.user.username, show_user_path(tweet.user ) %>
+      <%= tweet.content.html_safe %>
+      <%= link_to 'Show', tweet %>
+      <%= link_to 'Edit', edit_tweet_path(tweet) %>
+      <%= link_to 'Destroy', tweet, method: :delete, data: { confirm: 'Are you sure?' } %>
+    </div>
+  <% end %>
+</div>
